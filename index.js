@@ -5,6 +5,8 @@ const mongoose = require('mongoose')
 
 const Student = require('./models/student')
 const Class = require('./models/class')
+const Question = require('./models/question')
+const Quiz = require('./models/quiz')
 
 const app = express()
 const PORT = 3000
@@ -47,8 +49,33 @@ app.post('/classes', async (req, res) => {
   res.status(201).send(req.body)
 })
 
-app.post('/quizzes', (req, res) => {
-  const { name, questions } = req.body
+app.post('/quizzes', async (req, res) => {
+  const { quizName, questions } = req.body;
+
+  try {
+    const savedQuestionReferences = []
+
+    for (const questionData of questions) {
+      const newQuestion = new Question({
+        subject: questionData.subject,
+        question: questionData.question,
+        answer: questionData.answer
+      });
+
+      const savedQuestion = await newQuestion.save();
+      savedQuestionReferences.push(savedQuestion._id);
+    }
+
+    const newQuiz = new Quiz({
+      quizName,
+      questions: savedQuestionReferences
+    });
+
+    const savedQuiz = await newQuiz.save();
+    console.log('Quiz and Questions data saved successfully:', savedQuiz);
+  } catch (error) {
+    console.error('Error:', error);
+  }
 
   res.status(201).send(req.body)
 })
