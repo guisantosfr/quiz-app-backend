@@ -80,6 +80,16 @@ app.post('/quizzes', async (req, res) => {
   res.status(201).send(req.body)
 })
 
+app.get('/classes', async (req, res) => {
+  const classes = await Class.find({})
+  res.json(classes)
+})
+
+app.get('/quizzes', async (req, res) => {
+  const quizzes = await Quiz.find({})
+  res.json(quizzes)
+})
+
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`)
 })
