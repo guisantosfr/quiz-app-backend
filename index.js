@@ -27,6 +27,7 @@ app.post('/classes', async (req, res) => {
 
     for (const studentData of students) {
       const newStudent = new Student({
+        id: studentData.id,
         name: studentData.name,
         email: studentData.email,
       });
