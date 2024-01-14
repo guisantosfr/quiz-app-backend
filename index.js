@@ -9,7 +9,7 @@ const Question = require('./models/question')
 const Quiz = require('./models/quiz')
 
 const app = express()
-const PORT = 3000
+const PORT = process.env.PORT || 3000
 
 const mongoUrl = process.env.MONGODB_URL
 mongoose.connect(mongoUrl)
