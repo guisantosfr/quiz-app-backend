@@ -8,6 +8,8 @@ const Class = require('./models/class')
 const Question = require('./models/question')
 const Quiz = require('./models/quiz')
 
+const generateUniqueID = require('./helpers/generateUniqueID');
+
 const app = express()
 const PORT = process.env.PORT || 3000
 
@@ -59,6 +61,7 @@ app.post('/quizzes', async (req, res) => {
     for (const questionData of questions) {
       const newQuestion = new Question({
         subject: questionData.subject,
+        topic: questionData.topic,
         question: questionData.question,
         answer: questionData.answer
       });
@@ -69,6 +72,7 @@ app.post('/quizzes', async (req, res) => {
 
     const newQuiz = new Quiz({
       quizName,
+      quizCode: generateUniqueID(),
       questions: savedQuestionReferences
     });
 
