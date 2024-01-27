@@ -24,75 +24,79 @@ app.use(express.json())
 app.post('/classes', async (req, res) => {
   const { className, students } = req.body;
 
-  try {
-    const savedStudentReferences = []
-
-    for (const studentData of students) {
-      const newStudent = new Student({
-        matricula: studentData.matricula,
-        name: studentData.name,
-        email: studentData.email,
-      });
-
-      const savedStudent = await newStudent.save();
-      savedStudentReferences.push(savedStudent._id);
-    }
-
-    const newClass = new Class({
-      className,
-      students: savedStudentReferences
-    });
-
-    const savedClass = await newClass.save();
-    console.log('Class and students data saved successfully:', savedClass);
-  } catch (error) {
-    console.error('Error:', error);
+  if (!className) {
+    return res.status(400).json({ error: 'Turma sem nome' });
   }
 
-  res.status(201).send(req.body)
+  if (!students || students.length === 0) {
+    return res.status(400).json({ error: 'Os dados dos alunos não foram encontrados' });
+  }
+
+  const savedStudentReferences = []
+
+  for (const studentData of students) {
+    const newStudent = new Student({
+      matricula: studentData.matricula,
+      name: studentData.name,
+      email: studentData.email,
+    });
+
+    const savedStudent = await newStudent.save();
+    savedStudentReferences.push(savedStudent._id);
+  }
+
+  const newClass = new Class({
+    className,
+    students: savedStudentReferences
+  });
+
+  const savedClass = await newClass.save();
+  res.status(201).json(savedClass);
 })
 
 app.post('/quizzes', async (req, res) => {
   const { quizName, questions } = req.body;
 
-  try {
-    const savedQuestionReferences = []
-
-    for (const questionData of questions) {
-      const newQuestion = new Question({
-        subject: questionData.subject,
-        topic: questionData.topic,
-        question: questionData.question,
-        answer: questionData.answer
-      });
-
-      const savedQuestion = await newQuestion.save();
-      savedQuestionReferences.push(savedQuestion._id);
-    }
-
-    const newQuiz = new Quiz({
-      quizName,
-      quizCode: generateUniqueID(),
-      questions: savedQuestionReferences
-    });
-
-    const savedQuiz = await newQuiz.save();
-    console.log('Quiz and Questions data saved successfully:', savedQuiz);
-  } catch (error) {
-    console.error('Error:', error);
+  if (!quizName) {
+    return res.status(400).json({ error: 'Questionário sem nome' });
   }
 
-  res.status(201).send(req.body)
+  if (!questions || questions.length === 0) {
+    return res.status(400).json({ error: 'Os dados das questões não foram encontrados' });
+  }
+
+  const savedQuestionReferences = []
+
+  for (const questionData of questions) {
+    const newQuestion = new Question({
+      subject: questionData.subject,
+      topic: questionData.topic,
+      question: questionData.question,
+      answer: questionData.answer
+    });
+
+    const savedQuestion = await newQuestion.save();
+    savedQuestionReferences.push(savedQuestion._id);
+  }
+
+  const newQuiz = new Quiz({
+    quizName,
+    quizCode: generateUniqueID(),
+    questions: savedQuestionReferences
+  });
+
+  const savedQuiz = await newQuiz.save();
+  res.status(201).json(savedQuiz);
 })
 
 app.get('/classes', async (req, res) => {
-  const classes = await Class.find({})
-  res.json(classes)
+  const classes = await Class.find({});
+  res.status(200).json(classes);
 })
 
 app.get('/quizzes', async (req, res) => {
-  const quizzes = await Quiz.find({})
-  res.json(quizzes)
+  const quizzes = await Quiz.find({});
+  res.status(200).json(quizzes);
 })
 
 app.listen(PORT, () => {
