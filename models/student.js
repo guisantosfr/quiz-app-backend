@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const studentSchema = new mongoose.Schema({
-  matricula: Number,
+  id: Number,
   name: String,
   email: String
 });

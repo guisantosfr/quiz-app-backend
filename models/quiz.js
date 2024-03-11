@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 
 const quizSchema = new mongoose.Schema({
-  quizName: String,
-  quizCode: String,
+  name: String,
+  code: String,
   questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Question' }]
 });
 

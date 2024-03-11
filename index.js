@@ -22,9 +22,9 @@ app.use(cors())
 app.use(express.json())
 
 app.post('/classes', async (req, res) => {
-  const { className, students } = req.body;
+  const { name, students } = req.body;
 
-  if (!className) {
+  if (!name) {
     return res.status(400).json({ error: 'Turma sem nome' });
   }
 
@@ -36,7 +36,7 @@ app.post('/classes', async (req, res) => {
 
   for (const studentData of students) {
     const newStudent = new Student({
-      matricula: studentData.matricula,
+      id: studentData.id,
       name: studentData.name,
       email: studentData.email,
     });
@@ -46,7 +46,7 @@ app.post('/classes', async (req, res) => {
   }
 
   const newClass = new Class({
-    className,
+    name,
     students: savedStudentReferences
   });
 
@@ -55,9 +55,9 @@ app.post('/classes', async (req, res) => {
 })
 
 app.post('/quizzes', async (req, res) => {
-  const { quizName, questions } = req.body;
+  const { name, questions } = req.body;
 
-  if (!quizName) {
+  if (!name) {
     return res.status(400).json({ error: 'Questionário sem nome' });
   }
 
@@ -80,8 +80,8 @@ app.post('/quizzes', async (req, res) => {
   }
 
   const newQuiz = new Quiz({
-    quizName,
-    quizCode: generateUniqueID(),
+    name,
+    code: generateUniqueID(),
     questions: savedQuestionReferences
   });
 
