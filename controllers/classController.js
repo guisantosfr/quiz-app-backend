@@ -5,11 +5,11 @@ const createNewClass = async (req, res) => {
     const { name, students } = req.body;
 
     if (!name) {
-      return res.status(400).json({ error: 'Turma sem nome' });
+      return res.status(404).json({ error: 'Turma sem nome' });
     }
   
     if (!students || students.length === 0) {
-      return res.status(400).json({ error: 'Os dados dos alunos não foram encontrados' });
+      return res.status(404).json({ error: 'Os dados dos alunos não foram encontrados' });
     }
   
     const savedStudentReferences = []
@@ -39,7 +39,18 @@ const getClasses = async (req, res) => {
     res.status(200).json(classes);
 }
 
+const getClass = async (req, res) => {
+  const classFound = await Class.findById(req.params.id).exec();
+ 
+  if (!classFound) {
+    return res.status(404).json({ error: 'Turma não encontrada' });
+  }
+
+  res.status(200).json(classFound);
+}
+
 module.exports = {
-    createNewClass,
-    getClasses
+  createNewClass,
+  getClasses,
+  getClass
 }

@@ -43,7 +43,18 @@ const getQuizzes = async (req, res) => {
     res.status(200).json(quizzes);
 };
 
+const getQuiz = async (req, res) => {
+  const quizFound = await Quiz.findById(req.params.id);
+
+  if (!quizFound) {
+    return res.status(400).json({ error: 'Questionário não encontrado' });
+  }
+
+  res.status(200).json(quizFound);
+}
+
 module.exports = {
     createNewQuiz,
-    getQuizzes
+    getQuizzes,
+    getQuiz
 }
