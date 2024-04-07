@@ -46,6 +46,8 @@ const getClass = async (req, res) => {
     return res.status(404).json({ error: 'Turma não encontrada' });
   }
 
+  await classFound.populate('students');
+
   res.status(200).json(classFound);
 }
 
