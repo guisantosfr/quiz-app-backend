@@ -50,6 +50,8 @@ const getQuiz = async (req, res) => {
     return res.status(400).json({ error: 'Questionário não encontrado' });
   }
 
+  await quizFound.populate('questions');
+
   res.status(200).json(quizFound);
 }
 
