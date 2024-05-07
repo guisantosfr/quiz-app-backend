@@ -8,6 +8,8 @@ const PORT = process.env.PORT || 3000
 
 const classRoutes = require('./routes/classRoutes');
 const quizRoutes = require('./routes/quizRoutes');
+const loginRoutes = require('./routes/loginRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 const mongoUrl = process.env.MONGODB_URL
 mongoose.connect(mongoUrl)
@@ -19,6 +21,8 @@ app.use(express.json())
 
 app.use('/classes', classRoutes);
 app.use('/quizzes', quizRoutes);
+app.use('/login', loginRoutes);
+app.use('/users', userRoutes);
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`)
