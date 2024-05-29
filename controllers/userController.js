@@ -6,7 +6,7 @@ const hashPassword = password => {
 }
 
 const newUser = async (req, res) => {
-    const { email, name, password } = req.body;
+    const { email, name, isTeacher, password } = req.body;
 
     const userExists = await User.findOne({ email });
 
@@ -23,6 +23,7 @@ const newUser = async (req, res) => {
     const user = new User({
         email,
         name,
+        isTeacher,
         passwordHash
       })
     
