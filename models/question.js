@@ -4,7 +4,7 @@ const questionSchema = new mongoose.Schema({
   subject: String,
   topic: String,
   question: String,
-  answer: String
+  answer: Boolean
 });
 
 module.exports = mongoose.model('Question', questionSchema);
